@@ -1,31 +1,46 @@
 <?php
 session_start();
-if (isset($_SESSION['username'])) {
-    header("Location: index.php");
-    exit();
-}
 
-if (isset($_POST['login'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
-    $password = md5($_POST['password']);
-    
-    // Read users from JSON
-    $users = json_decode(file_get_contents('data/users.json'), true);
+    $password = $_POST['password'];
 
-    foreach ($users as $user) {
-        if ($user['username'] == $username && $user['password'] == $password) {
-            $_SESSION['username'] = $username;
-            header("Location: index.php");
-            exit();
-        }
+    // Dummy authentication
+    if ($username === 'admin' && $password === 'password') {
+        $_SESSION['username'] = $username;
+        header("Location: index.php");
+        exit();
+    } else {
+        $error = "Invalid login credentials!";
     }
-    $error = "Invalid login credentials!";
 }
 ?>
 
-<form method="POST">
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit" name="login">Login</button>
-    <?php if (isset($error)) { echo "<p>$error</p>"; } ?>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Login</h2>
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger"><?php echo $error; ?></div>
+        <?php endif; ?>
+        <form method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</body>
+</html>

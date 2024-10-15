@@ -8,9 +8,7 @@ A simple web application for managing tasks, built with HTML, CSS, JavaScript, a
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Usage](#usage)
-- [File Structure](#file-structure)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Features
 
